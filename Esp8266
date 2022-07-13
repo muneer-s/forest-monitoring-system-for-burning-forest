@@ -1,0 +1,50 @@
+#include <ESP8266WiFi.h>
+ 
+// change these values to match your network
+char ssid[] = "munners";       //  your network SSID (name)
+char pass[] = "muneermuni";          //  your network password
+ 
+#include "DHT.h"
+#define DHTPIN 5     // what digital pin we're connected to
+#define DHTTYPE DHT11   // DHT 11
+DHT dht(DHTPIN, DHTTYPE);
+ 
+float tempF = 0;
+float tempC = 0;
+float humid = 0;
+
+float mq;
+WiFiServer server(80);
+String request = "";
+ 
+ 
+void setup() 
+{
+    Serial.begin(115200);
+    Serial.println();
+    Serial.println("Serial started at 115200");
+    Serial.println();
+ 
+    dht.begin();
+ 
+    // Connect to a WiFi network
+    Serial.print(F("Connecting to "));  Serial.println(ssid);
+    WiFi.begin(ssid, pass);
+ 
+    while (WiFi.status() != WL_CONNECTED) 
+    {
+        Serial.print(".");
+        delay(500);
+    }
+ 
+    Serial.println("");
+    Serial.println(F("[CONNECTED]"));
+    Serial.print("[IP ");              
+    Serial.print(WiFi.localIP()); 
+    Serial.println("]");
+ 
+    // start a server
+    server.begin();
+    Serial.println("Server started");
+ 
+} // void setup()
