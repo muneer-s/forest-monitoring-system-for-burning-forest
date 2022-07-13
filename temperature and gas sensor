@@ -1,0 +1,34 @@
+
+void loop() 
+{
+    WiFiClient client = server.available();     // Check if a client has connected
+    if (!client)  {  return;  }
+ 
+    request = client.readStringUntil('\r');     // Read the first line of the request
+ 
+    Serial.println(request);
+    Serial.println("");
+    
+    float ijk =analogRead(A0);
+    mq = (ijk/1024)*100;
+    Serial.print("air Quality :");
+    Serial.print(mq);
+    Serial.println(" %");
+    if ( request.indexOf("getTemp") > 0 )
+     { 
+          Serial.println("getTemp received");
+ 
+          // Reading temperature or humidity takes about 250 milliseconds!
+          // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+          humid = dht.readHumidity();
+          tempC = dht.readTemperature();        // Read temperature as Celsius (the default)
+          tempF = dht.readTemperature(true);    // Read temperature as Fahrenheit (isFahrenheit = true)
+          
+          Serial.print("humidity :");
+          Serial.println(humid);
+          Serial.print("Temp :");
+          Serial.print(tempC);
+          Serial.println(" C");
+          Serial.print("Temp :");
+          Serial.print(tempF);
+          Serial.println(" F");
